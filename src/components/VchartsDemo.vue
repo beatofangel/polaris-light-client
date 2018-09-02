@@ -1,5 +1,14 @@
 <template>
   <div>
+    <language-panel ref="langPanel" :username="username[getLanguage]" trigger="click" />
+    <el-input v-model="username.en" :placeholder="$t('placeholder.username', 'en')"></el-input>
+    <el-input v-model="username.zh" :placeholder="$t('placeholder.username', 'zh')"></el-input>
+    <el-input v-model="username.ja" :placeholder="$t('placeholder.username', 'ja')"></el-input>
+    <el-date-picker
+      v-model="date1"
+      type="date"
+      :placeholder="$t('placeholder.date')">
+    </el-date-picker>
     <el-tabs v-model="value" @tab-click="handleClick">
       <el-tab-pane label="折线图" name="line">折线图</el-tab-pane>
       <el-tab-pane label="条形图" name="histogram">条形图</el-tab-pane>
@@ -21,10 +30,18 @@ import VeHistogram from 'v-charts/lib/histogram.common'
 import VeBar from 'v-charts/lib/bar.common'
 import VePie from 'v-charts/lib/pie.common'
 import VeScatter from 'v-charts/lib/scatter.common'
+import LanguagePanel from './common/LanguagePanel'
+import { mapGetters } from 'vuex'
 export default {
-  components: { VeLine, VeHistogram, VeBar, VePie, VeScatter },
+  components: { VeLine, VeHistogram, VeBar, VePie, VeScatter, LanguagePanel },
   data () {
     return {
+      date1: '',
+      username: {
+        en: '',
+        zh: '',
+        ja: ''
+      },
       chartData: {
         line: {
           columns: ['日期', '访问用户', '下单用户', '下单率'],
@@ -106,6 +123,11 @@ export default {
   methods: {
     handleClick (tab, event) {
     }
+  },
+  computed: {
+    ...mapGetters({
+      'getLanguage': 'getLanguage'
+    })
   }
 }
 </script>
